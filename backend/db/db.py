@@ -70,7 +70,6 @@ def GetAtrb(userID: int, *args):
 # Обновить атрибуты пользователя
 def SetAtrb(userID: int, **kwargs):
     with sqlite3.connect(DB_NAME) as db:
-        # First check if the user exists
         user_exists = db.execute("SELECT 1 FROM Users WHERE userID = ?", (userID,)).fetchone()
         if not user_exists:
             return False
@@ -86,7 +85,6 @@ def SetAtrb(userID: int, **kwargs):
                             zip(["login", "passwd", "name", "surname", "last_code", "lang", "RAM", "time_python",
                                  "time_java", "time_cpp", "time_js"], user_settings)]
 
-        # Perform the update in Users table
         db.execute("UPDATE Users SET login = ?, passwd = ?, name = ?, surname = ? WHERE userID = ?",
                    updated_settings[:4] + [userID])
 
